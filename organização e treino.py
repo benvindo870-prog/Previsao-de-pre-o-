@@ -17,7 +17,6 @@ def extrair_quartos(texto):
 
 def carregar_e_limpar(caminho_csv, eh_venda=False):
     try:
-        # Lê o CSV sem assumir tipos para não quebrar
         df = pd.read_csv(caminho_csv, dtype=str)
     except FileNotFoundError:
         print(f"⚠️ Ficheiro não encontrado: {caminho_csv}")
@@ -25,33 +24,26 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
     
     df_novo = pd.DataFrame()
     
-    # 1. Procurar o preço de forma inteligente em várias colunas (data2, data1, data3)
     def extrair_preco_inteligente(row):
-        # Lista de colunas onde o web scraper costuma guardar o preço
         colunas_busca = ['data2', 'data1', 'data3', 'data']
         
         for col in colunas_busca:
             if col in row and pd.notna(row[col]):
                 val_str = str(row[col]).upper().strip()
                 
-                # Ignora palavras que não são preços reais
                 if any(palavra in val_str for palavra in ['GRATUITO', 'TROCA', 'SOB CONSULTA']):
                     continue
-                
-                # Procura por números seguidos ou precedidos pelo símbolo de Euro ou com formato de preço
-                # Remove pontos e espaços para testar se são dígitos
+
                 apenas_numeros = re.sub(r'[^\d]', '', val_str)
                 if apenas_numeros:
                     val_num = float(apenas_numeros)
-                    # Filtro lógico: se for venda, o preço deve ser realisticamente maior
                     if eh_venda and val_num > 5000:
                         return val_num
                     elif not eh_venda and val_num <= 10000 and val_num > 50:
                         return val_num
-                    elif not eh_venda and val_num > 10000: # Caso o preço de arrendamento esteja noutra coluna
+                    elif not eh_venda and val_num > 10000: 
                         continue
                         
-        # Se falhar a busca inteligente, tenta extrair o primeiro número limpo da data2 por segurança
         if 'data2' in row and pd.notna(row['data2']):
             numeros = re.sub(r'[^\d]', '', str(row['data2']))
             if numeros: return float(numeros)
@@ -59,11 +51,9 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
         return None
 
     df_novo['preco'] = df.apply(extrair_preco_inteligente, axis=1)
-    
-    # 2. Extração de Quartos
+
     df_novo['quartos'] = df['data'].apply(extrair_quartos)
     
-    # 3. Extração da Área
     def encontrar_area(row):
         for col in ['data', 'data3', 'data4', 'data6']:
             if col in row:
@@ -76,25 +66,20 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
 
     df_novo['area_m2'] = df.apply(encontrar_area, axis=1)
     
-    # 4. Localização (Garante texto limpo e válido)
     col_localizacao = 'data5' if 'data5' in df.columns else 'data4'
     df_novo['localizacao'] = df[col_localizacao].fillna('Zona Geral').astype(str).str.strip()
     df_novo['localizacao'] = df_novo['localizacao'].apply(lambda x: x if x not in ['nan', '', 'None'] else 'Zona Geral')
     
-    # Remove linhas onde o preço falhou completamente
     df_novo = df_novo.dropna(subset=['preco']).copy()
     
-    # Engenharia de características para corrigir os preços invertidos por quartos
     df_novo['area_por_quarto'] = df_novo['area_m2'] / (df_novo['quartos'] + 1)
     
     return df_novo
 
-# --- CARREGAR OS FICHEIROS DO OLX ---
 print("A processar ficheiros com busca inteligente de colunas...")
 df_arrendamento = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08.csv", eh_venda=False)
 df_venda = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08-2.csv", eh_venda=True)
 
-# --- TREINAR OS MODELOS ---
 def treinar_sistema(df_dados, nome_pkl, tipo):
     if df_dados.empty or len(df_dados) < 2: 
         print(f"❌ Erro: O ficheiro de {tipo} ficou sem linhas. Vamos criar um modelo simulado para não bloquear a interface.")
@@ -109,7 +94,7 @@ def treinar_sistema(df_dados, nome_pkl, tipo):
     model = LinearRegression().fit(X, y)
     
     joblib.dump({'modelo': model, 'colunas_treino': list(X.columns)}, nome_pkl)
-    print(f"💾 Sucesso: {nome_pkl} gerado com {len(df_dados)} anúncios guardados!")
+    print(f" Sucesso: {nome_pkl} gerado com {len(df_dados)} anúncios guardados!")
 
 treinar_sistema(df_arrendamento, 'modelo_arrendamento.pkl', 'Arrendamento')
 treinar_sistema(df_venda, 'modelo_venda.pkl', 'Venda')
