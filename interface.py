@@ -8,7 +8,7 @@ st.title("Simulador de Preços de Imóveis")
 st.write("Selecione o tipo de mercado e insira as características para estimar o preço médio com base nos dados do OLX.")
 
 # 1. Escolha do Mercado (Arrendamento vs Venda)
-tipo_negocio = st.radio("O que deseja simular?", ["Arrendamento (Renda)", "Compra/Venda (Preço Total)"])
+tipo_negocio = st.radio("O que deseja simular?", ["Arrendamento (Renda)", "Compra / Venda (Preço Total)"])
 
 if tipo_negocio == "Arrendamento (Renda)":
     ficheiro_modelo = 'modelo_arrendamento.pkl'
