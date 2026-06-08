@@ -2,7 +2,7 @@
 
 **Unidade Curricular:** Projeto Final de Curso — Inteligência Artificial Aplicada  
 **Ano Letivo:** 2025/2026  
-**Data de Entrega:** Junho de 2026
+**Data de Entrega:** 08 de Junho de 2026
 
 ---
 
