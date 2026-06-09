@@ -92,7 +92,7 @@ df_venda = carregar_e_limpar(r"C:\Users\Raul\Downloads\olx-pt-2026-06-09-2.csv",
 def treinar_sistema(df_dados, nome_pkl, tipo):
     if df_dados.empty or len(df_dados) < 2: 
         print(f" Erro: O ficheiro de {tipo} ficou sem linhas. Vamos criar um modelo simulado para não bloquear a interface.")
-        # Cria uma linha falsa de segurança para a interface abrir de qualquer forma
+
         df_dados = pd.DataFrame([{'preco': 150000 if tipo=='Venda' else 800, 'quartos': 2.0, 'area_m2': 80.0, 'localizacao': 'Zona Geral', 'area_por_quarto': 26.6}])
     
     df_proc = pd.get_dummies(df_dados, columns=['localizacao'], drop_first=False)
