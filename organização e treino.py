@@ -24,7 +24,7 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
     try:
         df = pd.read_csv(caminho_csv, dtype=str)
     except FileNotFoundError:
-        print(f"⚠️ Ficheiro não encontrado: {caminho_csv}")
+        print(f"Ficheiro não encontrado: {caminho_csv}")
         return pd.DataFrame()
     
     df_novo = pd.DataFrame()
@@ -85,8 +85,8 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
     return df_novo
 
 print("A processar ficheiros com busca inteligente de colunas...")
-df_arrendamento = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08.csv", eh_venda=False)
-df_venda = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08-2.csv", eh_venda=True)
+df_arrendamento = carregar_e_limpar(r"C:\Users\Raul\Downloads\olx-pt-2026-06-09.csv", eh_venda=False)
+df_venda = carregar_e_limpar(r"C:\Users\Raul\Downloads\olx-pt-2026-06-09-2.csv", eh_venda=True)
 
 
 def treinar_sistema(df_dados, nome_pkl, tipo):
