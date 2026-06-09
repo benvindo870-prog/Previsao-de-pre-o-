@@ -1,8 +1,19 @@
 # Sistema de Previsão de Preços de Imóveis com Machine Learning
 
-**Unidade Curricular:** Projeto Final de Curso — Inteligência Artificial Aplicada  
-**Ano Letivo:** 2025/2026 | **Entrega:** Junho de 2026
+**Unidade Curricular:**  Inteligência Artificial Aplicada
+**Projeto** sistema de previsão de imoveis com Machine Learning  
 
+**Alunos** 
+Benvindo Elias nº a22510991
+Sadjo Djalo nº a22502320 
+João Francisco nº a22510064
+
+**Docente**
+
+Pedro Sobreiro
+
+**Ano Letivo:** 2025/2026 | **Entrega:** Junho de 2026
+´
 ---
 
 ## Resumo
@@ -357,9 +368,9 @@ Web Scraper. (2024). *Web Scraper documentation*. https://webscraper.io/document
 ## Declaração de Contribuições Individuais
 
 | Elemento | Contribuições |
-Bemvindo Elias nº 22510991 | Desenvolvemento aquisição de dados 
-Sadjo Djalo nº 22502320 | Treino e analise de resultado
-João Francisco nº          Avaliação de modelo e aquição de dados
+Benvindo Elias nº a22510991         | Desenvolvemento aquisição de dados 
+Sadjo Djalo nº a22502320            | Treino, analise de resultado e aquisição de dados
+João Francisco nº a22510064         | Avaliação de modelo e aquisição de dados
 
 ---
 
