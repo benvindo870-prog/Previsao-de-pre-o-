@@ -20,7 +20,6 @@ else:
 def carregar_modelo_dinamico(ficheiro):
     return joblib.load(ficheiro)
 
-
 try:
     dados = carregar_modelo_dinamico(ficheiro_modelo)
     modelo = dados['modelo']

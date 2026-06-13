@@ -6,14 +6,19 @@ from sklearn.linear_model import LinearRegression
 
 
 def extrair_quartos(texto):
-    if pd.isna(texto): return 1.0
+    if pd.isna(texto): 
+        return 1.0
     texto = str(texto).upper()
     match_t = re.search(r'T(\d+)', texto)
-    if match_t: return float(match_t.group(1))
+    if match_t: 
+        return float(match_t.group(1))
     match_q = re.search(r'(\d+)\s*QUARTO', texto)
-    if match_q: return float(match_q.group(1))
-    if 'ESTÚDIO' in texto or 'ESTUDIO' in texto or 'T0' in texto: return 0.0
+    if match_q: 
+        return float(match_q.group(1))
+    if 'ESTÚDIO' in texto or 'ESTUDIO' in texto or 'T0' in texto: 
+        return 0.0
     return 1.0
+
 
 def carregar_e_limpar(caminho_csv, eh_venda=False):
     try:
@@ -46,7 +51,8 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
                         
         if 'data2' in row and pd.notna(row['data2']):
             numeros = re.sub(r'[^\d]', '', str(row['data2']))
-            if numeros: return float(numeros)
+            if numeros: 
+                return float(numeros)
             
         return None
 
@@ -58,11 +64,13 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
         for col in ['data', 'data3', 'data4', 'data6']:
             if col in row:
                 match = re.search(r'(\d+)\s*(?:m²|m2|área)', str(row[col]), re.IGNORECASE)
-                if match: return float(match.group(1))
+                if match: 
+                    return float(match.group(1))
         if 'data4' in row:
             match_alt = re.search(r'(\d+)', str(row['data4']))
-            if match_alt: return float(match_alt.group(1))
-        return 75.0  # Área padrão caso falte no anúncio
+            if match_alt: 
+                return float(match_alt.group(1))
+        return 75.0 
 
     df_novo['area_m2'] = df.apply(encontrar_area, axis=1)
     
@@ -80,9 +88,10 @@ print("A processar ficheiros com busca inteligente de colunas...")
 df_arrendamento = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08.csv", eh_venda=False)
 df_venda = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08-2.csv", eh_venda=True)
 
+
 def treinar_sistema(df_dados, nome_pkl, tipo):
     if df_dados.empty or len(df_dados) < 2: 
-        print(f"❌ Erro: O ficheiro de {tipo} ficou sem linhas. Vamos criar um modelo simulado para não bloquear a interface.")
+        print(f" Erro: O ficheiro de {tipo} ficou sem linhas. Vamos criar um modelo simulado para não bloquear a interface.")
         # Cria uma linha falsa de segurança para a interface abrir de qualquer forma
         df_dados = pd.DataFrame([{'preco': 150000 if tipo=='Venda' else 800, 'quartos': 2.0, 'area_m2': 80.0, 'localizacao': 'Zona Geral', 'area_por_quarto': 26.6}])
     
