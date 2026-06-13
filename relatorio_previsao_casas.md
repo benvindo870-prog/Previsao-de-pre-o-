@@ -1,13 +1,24 @@
 # Sistema de Previsão de Preços de Imóveis com Machine Learning
 
-**Unidade Curricular:** Projeto Final de Curso — Inteligência Artificial Aplicada  
-**Ano Letivo:** 2025/2026 | **Entrega:** Junho de 2026
+**Unidade Curricular:**  Inteligência Artificial Aplicada
+**Projeto** sistema de previsão de imoveis com Machine Learning  
 
+**Alunos** 
+Benvindo Elias nº a22510991
+Sadjo Djalo nº a22502320 
+João Francisco nº a22510064
+
+**Docente**
+
+Pedro Sobreiro
+
+**Ano Letivo:** 2025/2026 | **Entrega:** Junho de 2026
+´
 ---
 
 ## Resumo
 
-Sistema de previsão de preços de imóveis baseado em Machine Learning, com dados reais recolhidos por web scraping do portal OLX Portugal. Inclui um pipeline de treino (Random Forest Regressor) e uma interface web em Streamlit para estimativas em tempo real. As principais tecnologias são Python, pandas, scikit-learn, joblib e Streamlit.
+Sistema de previsão de preços de imóveis baseado em Machine Learning, com dados reais recolhidos por web scraping do portal OLX Portugal. Inclui um pipeline de treino (Regressão Linear) e uma interface web em Streamlit para estimativas em tempo real. As principais tecnologias são Python, pandas, scikit-learn, joblib e Streamlit.
 
 ---
 
@@ -25,7 +36,7 @@ O mercado imobiliário português tem registado volatilidade crescente, dificult
 |---|---|
 | Geral | Desenvolver um sistema funcional de previsão de preços acessível via interface web |
 | Específico 1 | Recolher e processar dados reais do OLX Portugal |
-| Específico 2 | Treinar modelo de regressão (Random Forest) com features numéricas |
+| Específico 2 | Treinar modelo de regressão linear com features numéricas |
 | Específico 3 | Persistir o modelo e disponibilizá-lo via interface Streamlit |
 | Específico 4 | Avaliar desempenho com métricas MAE e R² |
 
@@ -39,7 +50,7 @@ O mercado imobiliário português tem registado volatilidade crescente, dificult
 
 **Regressão** — Previsão de um valor contínuo (preço). Métricas: MAE, RMSE, R².
 
-**Random Forest Regressor** — Ensemble de árvores de decisão que agrega previsões por média. Vantagens: robusto ao overfitting, não requer normalização, captura relações não lineares.
+**Regressão Linear** — Modelo que ajusta uma equação linear aos dados. Vantagens: interpretável, simples, adequado para dados de pequena escala e features numéricas.
 
 **Web Scraping** — Extração automatizada de dados de páginas web via extensão Web Scraper (Chrome).
 
@@ -49,7 +60,7 @@ O mercado imobiliário português tem registado volatilidade crescente, dificult
 |---|---|
 | Python 3.9+ | Linguagem principal |
 | pandas | Leitura, limpeza e transformação do CSV |
-| scikit-learn | Random Forest Regressor e métricas |
+| scikit-learn | Regressão Linear e métricas |
 | joblib | Serialização do modelo |
 | Streamlit | Interface web interativa |
 | Web Scraper (ext.) | Recolha de dados do OLX.pt |
@@ -60,7 +71,7 @@ O mercado imobiliário português tem registado volatilidade crescente, dificult
 |---|---|---|
 | Zillow "Zestimate" (EUA) | Redes neuronais profundas | Milhões de imóveis |
 | Idealista / Conf. Imobiliário (PT) | Índices baseados em transações reais | Nacional |
-| Este Projeto | Random Forest + OLX scraping | ~240 anúncios, Portugal |
+| Este Projeto | Regressão Linear + OLX scraping | ~240 anúncios, Portugal |
 
 ---
 
@@ -93,7 +104,7 @@ O mercado imobiliário português tem registado volatilidade crescente, dificult
 ### 3.3 Casos de Uso
 
 **UC01 – Treinar o Modelo**
-Ator: Desenvolvedor. Executa `new.py` → sistema lê o CSV, processa dados, treina o Random Forest e gera `modeloprevisaodeimovel.pkl`.
+Ator: Desenvolvedor. Executa `new.py` → sistema lê o CSV, processa dados, treina a Regressão Linear e gera `modeloprevisaodeimovel.pkl`.
 
 **UC02 – Estimar Preço de Imóvel**
 Ator: Utilizador Final. Acede à interface Streamlit, preenche área e tipologia, obtém preço estimado em euros.
@@ -111,7 +122,7 @@ O sistema é composto por dois módulos desacoplados que comunicam através de u
 │                         MÓDULO DE TREINO                             │
 │                           organizaçãoo e treino.py                   │
 │                                                                      │
-│   CSV  ──►  Pré-Processamento  ──►  Random Forest  ──►  modelo.pkl   │
+│   CSV  ──►  Pré-Processamento  ──►  Regressão Linear  ──►  modelo.pkl   │
 └──────────────────────────────────────────────────────────────────────┘
                                                 │
                                                 ▼
@@ -148,7 +159,7 @@ TREINO
     ├─ Features X: [area_m2, quartos]
     ├─ Target  y: [preco]
     ├─ Split 80% treino / 20% teste
-    └─ RandomForestRegressor(n_estimators=100).fit(X_train, y_train)
+    └─ LinearRegression().fit(X_train, y_train)
     ▼
   Métricas: MAE = 293 €  |  R² = -0.57
 
@@ -190,7 +201,7 @@ projeto_imoveis/
 
 | Decisão | Alternativa Considerada | Justificação da Escolha |
 |---|---|---|
-| Random Forest | Regressão Linear | Captura relações não lineares; mais robusto a outliers |
+| Regressão Linear | Regressão Linear | Simples, interpretável e funcional para features numéricas; exige menos hiperparâmetros |
 | Streamlit | Flask / Django | Desenvolvimento rápido em Python puro, sem HTML/CSS/JS |
 | joblib | pickle | Otimizado para objetos NumPy/scikit-learn; ficheiros menores |
 | Web Scraper | Selenium / Scrapy | Interface visual sem código; adequado a recolha pontual |
@@ -217,13 +228,13 @@ df = df.drop_duplicates().dropna(subset=['preco', 'area_m2', 'quartos'])
 ### 5.2 Treino e Serialização do Modelo
 
 ```python
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
 import joblib
 
 X = df[['area_m2', 'quartos']]
 y = df['preco']
 
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+model = LinearRegression()
 model.fit(X_train, y_train)
 
 joblib.dump({'modelo': model, 'coluna_treino': list(X.columns)},
@@ -334,7 +345,7 @@ O R² negativo (−0,57) indica que o modelo não generaliza adequadamente. As c
 
 Antipov, E. A., & Pokryshevskaya, E. B. (2012). Mass appraisal of residential apartments. *Expert Systems with Applications, 39*(12), 10772–10778.
 
-Breiman, L. (2001). Random forests. *Machine Learning, 45*(1), 5–32.
+Seber, G. A. F., & Lee, A. J. (2012). *Linear Regression Analysis* (2nd ed.). Wiley.
 
 Géron, A. (2022). *Hands-on machine learning with Scikit-Learn, Keras, and TensorFlow* (3rd ed.). O'Reilly Media.
 
@@ -357,9 +368,9 @@ Web Scraper. (2024). *Web Scraper documentation*. https://webscraper.io/document
 ## Declaração de Contribuições Individuais
 
 | Elemento | Contribuições |
-Bemvindo Elias nº 22510991 | Desenvolvemento aquisição de dados 
-Sadjo Djalo nº 22502320 | Treino e analise de resultado
-João Francisco nº          Avaliação de modelo e aquição de dados
+Benvindo Elias nº a22510991         | Desenvolvemento aquisição de dados 
+Sadjo Djalo nº a22502320            | Treino, analise de resultado e aquisição de dados
+João Francisco nº a22510064         | Avaliação de modelo e aquisição de dados
 
 ---
 
