@@ -24,7 +24,7 @@ def carregar_e_limpar(caminho_csv, eh_venda=False):
     try:
         df = pd.read_csv(caminho_csv, dtype=str)
     except FileNotFoundError:
-        print(f"⚠️ Ficheiro não encontrado: {caminho_csv}")
+        print(f" Ficheiro não encontrado: {caminho_csv}")
         return pd.DataFrame()
     
     df_novo = pd.DataFrame()
