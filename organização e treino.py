@@ -95,8 +95,8 @@ def treinar_sistema(df_dados, nome_pkl, tipo):
     print(f" Sucesso: {nome_pkl} gerado com {len(df_dados)} anúncios e {len(X.columns) - 3} localizações encontradas!")
 
 print("A processar ficheiros...")
-df_arrendamento = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08.csv", eh_venda=False)
-df_venda = carregar_e_limpar(r"F:\Transferencia PC\olx-pt-2026-6-08-2.csv", eh_venda=True)
+df_arrendamento = carregar_e_limpar(r"F:\ML\Trabalho IA e ML\Previsao-de-pre-o-\dados de treino\olx-pt-2026-6-08.csv", eh_venda=False)
+df_venda = carregar_e_limpar(r"F:\ML\Trabalho IA e ML\Previsao-de-pre-o-\dados de treino\olx-pt-2026-6-08-2.csv", eh_venda=True)
 
 treinar_sistema(df_arrendamento, 'modelo_arrendamento.pkl', 'Arrendamento')
 treinar_sistema(df_venda, 'modelo_venda.pkl', 'Venda')
